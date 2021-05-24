@@ -1,0 +1,48 @@
+#  
+include Make.inc
+#
+# ######################################################################
+#
+INCdep           = \
+   $(INCdir)/hpl_misc.h   $(INCdir)/hpl_blas.h   $(INCdir)/hpl_auxil.h \
+   $(INCdir)/hpl_pmisc.h  $(INCdir)/hpl_grid.h   $(INCdir)/hpl_comm.h  \
+   $(INCdir)/hpl_pauxil.h $(INCdir)/hpl_panel.h  $(INCdir)/hpl_pfact.h \
+   $(INCdir)/hpl_pgesv.h $(INCdir)/LU.h
+#
+## Object files ########################################################
+#
+HPL_pgeobj       = \
+   LU_init.o   LU_pdinfo.o LU_exit.o LU_solve.o
+#
+## Targets #############################################################
+#
+all     : lib 
+#
+lib     : lib.grd
+#
+lib.grd : $(HPL_pgeobj)
+	$(ARCHIVER) $(ARFLAGS) $(HPLlib) $(HPL_pgeobj)
+	$(RANLIB) $(HPLlib)
+	$(TOUCH) lib.grd
+#
+# ######################################################################
+#
+LU_init.o            : ../LU_init.c            $(INCdep)
+	$(CC) -o $@ -c $(CCFLAGS)  ../LU_init.c
+LU_pdinfo.o          : ../LU_pdinfo.c          $(INCdep)
+	$(CC) -o $@ -c $(CCFLAGS)  ../LU_pdinfo.c
+LU_exit.o       : ../LU_exit.c       $(INCdep)
+	$(CC) -o $@ -c $(CCFLAGS)  ../LU_exit.c
+LU_solve.o       : ../LU_solve.c       $(INCdep)
+	$(CC) -o $@ -c $(CCFLAGS)  ../LU_solve.c
+HPL_gmres.o	:../HPL_gmres.c
+	$(CC) -o $@ -c $(CCFLAGS) ../HPL_gmres.c
+HPL_blange.o       : ../HPL_blange.c       $(INCdep)
+	$(CC) -o $@ -c $(CCFLAGS)  ../HPL_blange.c
+#
+# ######################################################################
+#
+clean            :
+	$(RM) *.o *.grd
+#
+# ######################################################################
