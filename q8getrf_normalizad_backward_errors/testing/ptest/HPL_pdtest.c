@@ -479,7 +479,10 @@ void HPL_pdtest
  */
    resid0 = HPL_pdlange( GRID, HPL_NORM_I, N, 1, NB, Bptr, mat.ld );
    double res = resid0/(AnormI * XnormI);
-   printf("N=%d,||Ax-b||_oo/(||A||_oo*||x||_oo)=%16.8e\n",N,res);
+   if( ( myrow == 0 ) && ( mycol == 0 ) ){
+      printf("N=%d,||Ax-b||_oo/(||A||_oo*||x||_oo)=%16.8e\n",N,res);
+   }
+   
 /*
  * Computes and displays norms, residuals ...
  */
